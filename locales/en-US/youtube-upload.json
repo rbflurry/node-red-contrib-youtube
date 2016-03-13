@@ -1,0 +1,14 @@
+{
+    "youtube-upload": {
+        "label": {
+            "name": "Name",
+            "youtubeUpload": "Youtube Upload",
+            "credentials": "Google Credentials",
+            "privacyStatus": "Privacy Status",
+            "private": "Private",
+            "public": "Public",
+            "unlisted": "Unlisted",
+            "mediapath": "Media Path"
+        }
+    }
+}
