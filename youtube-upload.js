@@ -25,6 +25,9 @@ module.exports = function(RED){
                 , token: node.google.credentials.accessToken
             });
 
+            var stat = fs.statSync(filename);
+            progressStream.setLength(stat.size);
+
             progressStream.on('progress', function(progress) {
                 node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
             });
@@ -36,8 +39,8 @@ module.exports = function(RED){
             Youtube.videos.insert({
                 resource: {
                     snippet: {
-                        title: "Testing",
-                        description: "description",
+                        title: title_,
+                        description: description_,
                     },
 
                     status: {

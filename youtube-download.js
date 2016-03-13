@@ -26,7 +26,10 @@ module.exports = function(RED){
 
             Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } })
                 .pipe(progressStream)
-                .pipe(Fs.createWriteStream(path_))
+                .pipe(Fs.createWriteStream(path_)).
+                on('info', function(info, format) {
+                    progressStream.setLength( format.size );
+                })
                 .on('finish', function(){
                     node.status({fill:"blue", shape:"dot", text:"Done"});
                     node.send(msg);
