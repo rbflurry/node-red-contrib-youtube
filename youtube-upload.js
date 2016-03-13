@@ -30,7 +30,8 @@ module.exports = function(RED){
             });
 
             var videoPath = Path.resolve(RED.util.evaluateNodeProperty(node.mediapath, node.mediapathType, node, msg));
-            //console.log(videoPath);
+            var title_ = RED.util.evaluateNodeProperty(node.title, node.titleType, node, msg);
+            var description_ = RED.util.evaluateNodeProperty(node.description, node.descriptionType, node, msg)
 
             Youtube.videos.insert({
                 resource: {

@@ -9,7 +9,9 @@
             "public": "Public",
             "unlisted": "Unlisted",
             "mediapath": "Media Path",
-            "paletteLabel": "upload"
+            "paletteLabel": "upload",
+            "title":"Title",
+            "description": "Description"
         }
     }
 }

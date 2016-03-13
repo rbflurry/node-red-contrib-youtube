@@ -7,6 +7,16 @@
         <label for="node-input-google"><i class="fa fa-user"></i> <span data-i18n="youtube-upload.label.credentials"></span></label>
         <input type="text" id="node-input-google">
     </div>
+    <div>
+        <label for="node-input-title"><i class="fa fa-font"></i> <span data-i18n="youtube-upload.label.title"></span> </label>
+        <input type="text" id="node-input-title" style="width: 70%">
+        <input type="hidden" id="node-input-titleType">
+    </div>
+    <div>
+        <label for="node-input-description"><i class="fa fa-align-justify"></i> <span data-i18n="youtube-upload.label.description"></span> </label>
+        <input type="text" id="node-input-description" style="width: 70%">
+        <input type="hidden" id="node-input-descriptionType">
+    </div>
     <div class="form-row">
         <label for="node-input-privacyStatus"><i class="fa fa-eye"></i> <span data-i18n="youtube-upload.label.privacyStatus"></span> </label>
         <select type="text" id="node-input-privacyStatus" style="width:72%;">
@@ -17,7 +27,7 @@
     </div>
     <div>
         <label for="node-input-mediapath"><i class="fa fa-file-video-o"></i> <span data-i18n="youtube-upload.label.mediapath"></span> </label>
-        <input type="text" id="node-input-mediapath">
+        <input type="text" id="node-input-mediapath" style="width: 70%">
         <input type="hidden" id="node-input-mediapathType">
     </div>
 
@@ -35,6 +45,10 @@
         defaults: {
             google: {type:"google-credentials-youtube", required:true},
             name: {value:""},
+            title: {required:true},
+            titleType: {value:"str"},
+            description: {required: true},
+            descriptionType: {value:"str"},
             privacyStatus: {value:"private", required: true},
             mediapath: {required:true},
             mediapathType: {value:"str"}
@@ -50,6 +64,8 @@
             return this._("youtube-upload.label.paletteLabel")
         },
         oneditprepare: function() {
+            $("#node-input-title").typedInput({default:'str', typeField: $("#node-input-titleType"), types: ['msg', 'flow', 'global', 'str']});
+            $("#node-input-description").typedInput({default:'str', typeField: $("#node-input-descriptionType"), types: ['msg', 'flow', 'global', 'str']});
             $("#node-input-mediapath").typedInput({default:'str', typeField: $("#node-input-mediapathType"), types: ['msg', 'flow', 'global', 'str']});
         }
     });
