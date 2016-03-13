@@ -37,7 +37,9 @@
         label: function() {
             return this.name||this._("youtube-download.label.youtubeDownload");
         },
-        paletteLabel: this._("youtube-download.label.paletteLabel"),
+        paletteLabel: function() {
+            return this._("youtube-download.label.paletteLabel")
+        },
         oneditprepare: function() {
             $("#node-input-path").typedInput({default:'str', typeField: $("#node-input-pathType"), types: ['msg', 'flow', 'global', 'str']});
             $("#node-input-url").typedInput({default:'str', typeField: $("#node-input-urlType"), types: ['msg', 'flow', 'global', 'str']});
