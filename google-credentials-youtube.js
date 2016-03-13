@@ -119,7 +119,7 @@ module.exports = function(RED) {
         });
     };
 
-    RED.httpAdmin.get('/google-credential-youtube/auth', function(req, res){
+    RED.httpAdmin.get('/google-credentials-youtube/auth', function(req, res){
         if (!req.query.clientId || !req.query.clientSecret ||
             !req.query.id || !req.query.callback) {
             res.send(400);
@@ -156,7 +156,7 @@ module.exports = function(RED) {
         RED.nodes.addCredentials(node_id, credentials);
     });
 
-    RED.httpAdmin.get('/google-credential-youtube/auth/callback', function(req, res) {
+    RED.httpAdmin.get('/google-credentials-youtube/auth/callback', function(req, res) {
         if (req.query.error) {
             return res.send(RED._("google.error.error", {error: req.query.error, description: req.query.error_description}));
         }
