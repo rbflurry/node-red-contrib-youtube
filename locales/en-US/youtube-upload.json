@@ -8,7 +8,8 @@
             "private": "Private",
             "public": "Public",
             "unlisted": "Unlisted",
-            "mediapath": "Media Path"
+            "mediapath": "Media Path",
+            "paletteLabel": "upload"
         }
     }
 }

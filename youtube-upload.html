@@ -46,6 +46,7 @@
         label: function() {
             return this.name||this._("youtube-upload.label.youtubeUpload");
         },
+        paletteLabel: this._("youtube-upload.label.paletteLabel"),
         oneditprepare: function() {
             $("#node-input-mediapath").typedInput({default:'str', typeField: $("#node-input-mediapathType"), types: ['msg', 'flow', 'global', 'str']});
         }

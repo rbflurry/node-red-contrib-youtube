@@ -24,7 +24,7 @@ module.exports = function(RED){
                 node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
             });
 
-            Ytdl(url_)
+            Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } })
                 .pipe(progressStream)
                 .pipe(Fs.createWriteStream(path_))
                 .on('finish', function(){

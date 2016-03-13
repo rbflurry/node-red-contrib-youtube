@@ -4,7 +4,8 @@
             "name":"Name",
             "youtubeDownload": "Youtube Download",
             "path": "Path",
-            "url": "url"
+            "url": "url",
+            "paletteLabel":"download"
         }
     }
 }
