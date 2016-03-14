@@ -27,7 +27,7 @@ module.exports = function(RED){
             var ytdl = Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } });
 
             ytdl.on('response', function(response) {
-                progressStream.setLength( response.headers.["content-length"] );
+                progressStream.setLength( response.headers["content-length"] );
             });
             ytdl.on('finish', function(){
                 node.status({fill:"blue", shape:"dot", text:"Done"});
