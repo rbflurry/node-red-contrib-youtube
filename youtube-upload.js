@@ -28,7 +28,7 @@ module.exports = function(RED){
 
 
             progressStream.on('progress', function(progress) {
-                node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
+                node.status({fill:"blue", shape:"ring", text:progress.percentage.toFixed(2) + "%"});
             });
 
             var videoPath = Path.resolve(RED.util.evaluateNodeProperty(node.mediapath, node.mediapathType, node, msg));

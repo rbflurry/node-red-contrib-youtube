@@ -21,14 +21,13 @@ module.exports = function(RED){
 
 
             progressStream.on('progress', function(progress) {
-                node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
+                node.status({fill:"blue", shape:"ring", text:progress.percentage.toFixed(2) + "%"});
             });
 
             var ytdl = Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } });
 
             ytdl.on('response', function(response) {
-                console.log(response);
-                progressStream.setLength( response["Content-Length"] );
+                progressStream.setLength( response.headers.["content-length"] );
             });
             ytdl.on('finish', function(){
                 node.status({fill:"blue", shape:"dot", text:"Done"});
