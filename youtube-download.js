@@ -16,6 +16,7 @@ module.exports = function(RED){
         var node = this;
 
         this.on('input', function(msg){
+            node.status({fill:"blue", shape:"ring", text:"Starting"});
             var path_ = RED.util.evaluateNodeProperty(node.path, node.pathType, node, msg);
             var url_ = RED.util.evaluateNodeProperty(node.url, node.urlType, node, msg);
 
@@ -29,11 +30,11 @@ module.exports = function(RED){
             ytdl.on('response', function(response) {
                 progressStream.setLength( response.headers["content-length"] );
             });
-            ytdl.on('finish', function(){
+            ytdl.pipe(progressStream).pipe(Fs.createWriteStream(path_))
+            .on('finish', function(){
                 node.status({fill:"blue", shape:"dot", text:"Done"});
                 node.send(msg);
-            });
-            ytdl.pipe(progressStream).pipe(Fs.createWriteStream(path_));
+            })
         });
     }
     RED.nodes.registerType("youtube-download", YoutubeDownload);
