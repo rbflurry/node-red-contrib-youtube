@@ -25,7 +25,7 @@ module.exports = function(RED){
                 , token: node.google.credentials.accessToken
             });
 
-            var stat = fs.statSync(filename);
+            var stat = Fs.statSync(filename);
             progressStream.setLength(stat.size);
 
             progressStream.on('progress', function(progress) {
