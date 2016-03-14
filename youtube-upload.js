@@ -25,8 +25,7 @@ module.exports = function(RED){
                 , token: node.google.credentials.accessToken
             });
 
-            var stat = Fs.statSync(filename);
-            progressStream.setLength(stat.size);
+
 
             progressStream.on('progress', function(progress) {
                 node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
@@ -35,6 +34,9 @@ module.exports = function(RED){
             var videoPath = Path.resolve(RED.util.evaluateNodeProperty(node.mediapath, node.mediapathType, node, msg));
             var title_ = RED.util.evaluateNodeProperty(node.title, node.titleType, node, msg);
             var description_ = RED.util.evaluateNodeProperty(node.description, node.descriptionType, node, msg)
+
+            var stat = Fs.statSync(videoPath);
+            progressStream.setLength(stat.size);
 
             Youtube.videos.insert({
                 resource: {
