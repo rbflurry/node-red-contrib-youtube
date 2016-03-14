@@ -35,6 +35,14 @@ module.exports = function(RED){
                 node.status({fill:"blue", shape:"dot", text:"Done"});
                 node.send(msg);
             })
+            node.ytdl = ytdl;
+        });
+
+        this.on('close', function(){
+            if(node.ytdl)
+                node.ytdl.destroy();
+            if(progressStream)
+                progressStream.destroy();
         });
     }
     RED.nodes.registerType("youtube-download", YoutubeDownload);

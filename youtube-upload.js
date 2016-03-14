@@ -38,7 +38,9 @@ module.exports = function(RED){
             var stat = Fs.statSync(videoPath);
             progressStream.setLength(stat.size);
 
-            Youtube.videos.insert({
+            node.uploadStream = Fs.createReadStream(videoPath).pipe(progressStream);
+
+            node.youtubeInsertReq = Youtube.videos.insert({
                 resource: {
                     snippet: {
                         title: title_,
@@ -54,7 +56,7 @@ module.exports = function(RED){
 
                 // Create the readable stream to upload the video
                 media: {
-                    body: Fs.createReadStream(videoPath).pipe(progressStream)
+                    body: node.uploadStream
                 }
             }, function(err, data){
                 if(err){
@@ -66,6 +68,13 @@ module.exports = function(RED){
                     node.send(msg);
                 }
             })
+        });
+
+        this.on('close', function(){
+            if(node.uploadStream)
+                node.uploadStream.destroy();
+            if(node.youtubeInsertReq)
+                delete node.youtubeInsertReq;
         });
     }
     RED.nodes.registerType("youtube-upload", YoutubeUpload);
