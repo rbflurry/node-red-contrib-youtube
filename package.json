@@ -2,13 +2,13 @@
   "name": "node-red-contrib-youtube",
   "version": "0.0.3",
   "description": "Youtube nodes for node-red",
-  "main": "node-red-contrib-youtube-up.js",
+  "main": "node-red-contrib-youtube-upload.js",
   "scripts": {
     "test": "node ./node_modules/node-red/red.js -v"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/StefanWerW/node-red-contrib-youtube-up.git"
+    "url": "git+https://github.com/StefanWerW/node-red-contrib-youtube.git"
   },
   "dependencies": {
       "request": "~2.40.0",
@@ -33,7 +33,7 @@
   "author": "scaw.dev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/StefanWerW/node-red-contrib-youtube-up/issues"
+    "url": "https://github.com/StefanWerW/node-red-contrib-youtube/issues"
   },
-  "homepage": "https://github.com/StefanWerW/node-red-contrib-youtube-up#readme"
+  "homepage": "https://github.com/StefanWerW/node-red-contrib-youtube#readme"
 }
