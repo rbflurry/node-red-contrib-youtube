@@ -24,17 +24,18 @@ module.exports = function(RED){
                 node.status({fill:"blue", shape:"ring", text:progress.percentage + "%"});
             });
 
-            Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } })
-                .pipe(progressStream)
-                .pipe(Fs.createWriteStream(path_)).
-                on('response', function(response) {
-                    console.log(JSON.jsonify(response));
-                    progressStream.setLength( response["Content-Length"] );
-                })
-                .on('finish', function(){
-                    node.status({fill:"blue", shape:"dot", text:"Done"});
-                    node.send(msg);
-                })
+            var ytdl = Ytdl(url_, { filter: function(format) { return format.container === 'mp4'; } });
+
+            ytdl.on('response', function(response) {
+                console.log("response");
+                console.log(JSON.stringify(response));
+                progressStream.setLength( response["Content-Length"] );
+            });
+            ytdl.on('finish', function(){
+                node.status({fill:"blue", shape:"dot", text:"Done"});
+                node.send(msg);
+            });
+            ytdl.pipe(progressStream).pipe(Fs.createWriteStream(path_));
         });
     }
     RED.nodes.registerType("youtube-download", YoutubeDownload);
