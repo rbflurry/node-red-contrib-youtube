@@ -71,10 +71,15 @@ module.exports = function(RED){
         });
 
         this.on('close', function(){
-            if(node.uploadStream)
+            //End upload
+            if(node.uploadStream && node.uploadStream.destroy)
                 node.uploadStream.destroy();
-            if(node.youtubeInsertReq)
+            if(node.youtubeInsertReq){
+                if(node.youtubeInsertReq.destroy)
+                    node.youtubeInsertReq.destroy();
                 delete node.youtubeInsertReq;
+            }
+
         });
     }
     RED.nodes.registerType("youtube-upload", YoutubeUpload);

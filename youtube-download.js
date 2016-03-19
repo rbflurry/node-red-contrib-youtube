@@ -39,9 +39,9 @@ module.exports = function(RED){
         });
 
         this.on('close', function(){
-            if(node.ytdl)
+            if(node.ytdl && node.ytdl.destroy)
                 node.ytdl.destroy();
-            if(progressStream)
+            if(progressStream && progressStream.destroy)
                 progressStream.destroy();
         });
     }
