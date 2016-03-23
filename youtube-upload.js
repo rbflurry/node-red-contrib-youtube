@@ -21,57 +21,71 @@ module.exports = function(RED){
         var node = this;
 
         this.on('input', function(msg){
-            //TODO text in youtube.json
-            node.status({fill:"blue", shape:"ring", text:"uploading"});
+            function processInput(){
+                node.status({fill:"blue", shape:"ring", text:"uploading"});
+                Youtube.authenticate({
+                    type: "oauth"
+                    , token: node.google.credentials.accessToken
+                });
+                progressStream.on('progress', function(progress) {
+                    node.status({fill:"blue", shape:"ring", text:progress.percentage.toFixed(2) + "%"});
+                });
 
-            Youtube.authenticate({
-                type: "oauth"
-                , token: node.google.credentials.accessToken
-            });
+                var videoPath = Path.resolve(RED.util.evaluateNodeProperty(node.mediapath, node.mediapathType, node, msg));
+                var title_ = RED.util.evaluateNodeProperty(node.title, node.titleType, node, msg);
+                var description_ = RED.util.evaluateNodeProperty(node.description, node.descriptionType, node, msg)
 
+                var stat = Fs.statSync(videoPath);
+                progressStream.setLength(stat.size);
 
+                node.uploadStream = Fs.createReadStream(videoPath).pipe(progressStream);
 
-            progressStream.on('progress', function(progress) {
-                node.status({fill:"blue", shape:"ring", text:progress.percentage.toFixed(2) + "%"});
-            });
+                node.youtubeInsertReq = Youtube.videos.insert({
+                    resource: {
+                        snippet: {
+                            title: title_,
+                            description: description_,
+                        },
 
-            var videoPath = Path.resolve(RED.util.evaluateNodeProperty(node.mediapath, node.mediapathType, node, msg));
-            var title_ = RED.util.evaluateNodeProperty(node.title, node.titleType, node, msg);
-            var description_ = RED.util.evaluateNodeProperty(node.description, node.descriptionType, node, msg)
-
-            var stat = Fs.statSync(videoPath);
-            progressStream.setLength(stat.size);
-
-            node.uploadStream = Fs.createReadStream(videoPath).pipe(progressStream);
-
-            node.youtubeInsertReq = Youtube.videos.insert({
-                resource: {
-                    snippet: {
-                        title: title_,
-                        description: description_,
+                        status: {
+                            privacyStatus: node.privacyStatus
+                        }
                     },
 
-                    status: {
-                        privacyStatus: node.privacyStatus
+                    part: "snippet,status",
+
+                    // Create the readable stream to upload the video
+                    media: {
+                        body: node.uploadStream
                     }
-                },
+                }, function(err, data){
+                    if(err){
+                        node.status({fill:"red", shape:"dot", text:"Error " + err});
+                        node.error(err);
+                    }else{
+                        node.status({});
+                        msg.payload = data;
+                        node.send(msg);
+                    }
+                })
+            }
 
-                part: "snippet,status",
-
-                // Create the readable stream to upload the video
-                media: {
-                    body: node.uploadStream
+            var curTime = new Date().getTime() / 1000;
+            if(node.google && node.google.credentials){
+                var expireTime = node.google.credentials.expireTime;
+                var expired = (curTime > expireTime);
+                if(expired){
+                    console.log('expired token');
+                    node.google.refreshToken(function(){
+                        console.log("refreshed");
+                        accessToken = node.google.credentials.accessToken;
+                        processInput();
+                    });
+                } else{
+                    accessToken = node.google.credentials.accessToken;
+                    processInput();
                 }
-            }, function(err, data){
-                if(err){
-                    node.status({fill:"red", shape:"dot", text:"Error " + err});
-                    node.error(err);
-                }else{
-                    node.status({});
-                    msg.payload = data;
-                    node.send(msg);
-                }
-            })
+            }
         });
 
         this.on('close', function(){
