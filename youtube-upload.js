@@ -78,11 +78,9 @@ module.exports = function(RED){
                     console.log('expired token');
                     node.google.refreshToken(function(){
                         console.log("refreshed");
-                        accessToken = node.google.credentials.accessToken;
                         processInput();
                     });
                 } else{
-                    accessToken = node.google.credentials.accessToken;
                     processInput();
                 }
             }
