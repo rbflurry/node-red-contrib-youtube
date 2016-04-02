@@ -15,7 +15,7 @@ module.exports = function(RED){
         var Fs = require('fs');
         var Path = require('path');
         var Progress = require('progress-stream');
-        var progressStream = Progress({time:500});
+
 
         this.status({});
         var node = this;
@@ -23,6 +23,7 @@ module.exports = function(RED){
         this.on('input', function(msg){
             function processInput(){
                 node.status({fill:"blue", shape:"ring", text:"uploading"});
+                var progressStream = Progress({time:500});
                 Youtube.authenticate({
                     type: "oauth"
                     , token: node.google.credentials.accessToken
